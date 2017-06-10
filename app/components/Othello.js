@@ -14,23 +14,23 @@ const stoneStyle = {
     width: 50,
     height: 50,
     background: 'white',
-    borderRadius: 5,
+    borderRadius: '50%',
   },
   black: {
     width: 50,
     height: 50,
     background: 'black',
-    borderRadius: 5,
+    borderRadius: '50%',
   },
   empty: {}
 };
 
 const enableStyle = {
-  borderRadius: 5,
+  borderRadius: '50%',
   margin: 3,
   width: 40,
   height: 40,
-  border: 'solid #aaa 2px'
+  border: 'dotted #aaa 2px'
 };
 
 class Othello extends Component {
