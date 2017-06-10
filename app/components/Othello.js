@@ -48,6 +48,7 @@ class Othello extends Component {
 
   render() {
     const { board, game, changeHand, putStone } = this.props;
+    const { black, white } = _.countBy(_.flatten(board.squares), 'owner');
     return (
       <div>
         <div className={styles.backButton} data-tid="backButton">
@@ -60,6 +61,16 @@ class Othello extends Component {
               <span>{game.hand}</span>
             </p>
           </div>
+          <div style={{ display: 'flex' }}>
+            <div style={{ marginRight: '2em' }}>
+              <span>b: </span>
+              <span>{black}</span>
+            </div>
+            <div>
+              <span>w: </span>
+              <span>{white}</span>
+            </div>
+          </div>
           <table style={{ borderStyle: 'solid' }}>
             { _.map(_.range(board.squares.length), (y) => (
               <tr>
@@ -67,9 +78,7 @@ class Othello extends Component {
                   const square: Square = board.squares[y][x];
                   return (
                     <td
-                      align="center"
-                      valign="center"
-                      style={{ width: 50, height: 50, border: 'solid 1px' }}
+                      style={{ verticalAlign: 'middle', align: 'center', width: 50, height: 50, border: 'solid 1px' }}
                       onClick={() => {
                         if (!square.enable) {
                           return;
