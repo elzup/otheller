@@ -4,7 +4,21 @@
     "sourceType": "module",
     "allowImportExportEverywhere": true
   },
-  "extends": "airbnb",
+  "globals": {
+    "__DEV__": false,
+    "alert": false,
+    "it": false,
+    "expect": false,
+    "console": false
+  },
+  "plugins": [
+    "flowtype",
+    "flowtype-errors",
+    "import",
+    "promise",
+    "compat",
+    "react"
+  ],
   "env": {
     "browser": true,
     "node": true
@@ -17,16 +31,17 @@
     "comma-dangle": [
       2,
       "always-multiline"
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
     ]
   },
-  "plugins": [
-    "flowtype",
-    "flowtype-errors",
-    "import",
-    "promise",
-    "compat",
-    "react"
-  ],
   "settings": {
     "import/resolver": {
       "webpack": {

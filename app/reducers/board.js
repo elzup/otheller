@@ -1,53 +1,55 @@
-/* eslint-disable no-mixed-operators */
 // @flow
-import _ from 'lodash'
+import _ from "lodash"
 
-import { INITIALIZE_BOARD, PUT_STORE } from '../actions/board'
-import type { PlayerType } from './game'
-import { reverseHand } from './game'
+import { INITIALIZE_BOARD, PUT_STORE } from "../actions/board"
+import type { PlayerType } from "./game"
+import { reverseHand } from "./game"
 
-type SquareType = 'black' | 'white' | 'empty';
+type SquareType = "black" | "white" | "empty"
 
 export type Square = {
   owner: SquareType,
   enable: boolean
-};
+}
 
 export type boardStateType = {
   squares: Array<Array<Square>>
-};
+}
 
 type actionType = {
   type: string,
   x?: number,
   y?: number,
   hand?: PlayerType
-};
+}
 
 const initState: boardStateType = {
   squares: [[]],
 }
 
-export default function counter(state: boardStateType = initState, action: actionType) {
+export default function counter(
+  state: boardStateType = initState,
+  action: actionType
+) {
   switch (action.type) {
     case INITIALIZE_BOARD:
       const squares = _.map(new Array(8), () =>
-        _.map(new Array(8), () => ({ owner: 'empty', enable: false }: Square))
+        _.map(new Array(8), () => ({ owner: "empty", enable: false }: Square))
       )
-      squares[3][4].owner = 'black'
-      squares[4][3].owner = 'black'
-      squares[3][3].owner = 'white'
-      squares[4][4].owner = 'white'
-      return { ...state, squares: enableCheck(squares, 'black') }
+      squares[3][4].owner = "black"
+      squares[4][3].owner = "black"
+      squares[3][3].owner = "white"
+      squares[4][4].owner = "white"
+      return { ...state, squares: enableCheck(squares, "black") }
     case PUT_STORE:
       const { x, y, hand } = action
       const squares2 = [...state.squares]
 
-      if (state.squares[y][x].owner !== 'empty') {
+      if (state.squares[y][x].owner !== "empty") {
         return state
       }
-      _.each([-1, 0, 1], (dx) => {
-        _.each([-1, 0, 1], (dy) => {
+      _.each([-1, 0, 1], dx => {
+        _.each([-1, 0, 1], dy => {
           if (dx === 0 && dy === 0) {
             return
           }
@@ -60,7 +62,7 @@ export default function counter(state: boardStateType = initState, action: actio
               return
             }
             const tSquare = state.squares[ty][tx]
-            const isEmpty = tSquare.owner === 'empty'
+            const isEmpty = tSquare.owner === "empty"
             const isMine = tSquare.owner === hand
             const isEnemy = !isMine && !isEmpty
             if (isEmpty) {
@@ -92,16 +94,19 @@ export default function counter(state: boardStateType = initState, action: actio
   }
 }
 
-function enableCheck(oldSquares: Array<Array<Square>>, hand: PlayerType): Array<Array<Square>> {
+function enableCheck(
+  oldSquares: Array<Array<Square>>,
+  hand: PlayerType
+): Array<Array<Square>> {
   const squares = [...oldSquares]
-  _.each(_.range(squares.length), (y) => {
-    _.each(_.range(squares[0].length), (x) => {
-      if (squares[y][x].owner !== 'empty') {
+  _.each(_.range(squares.length), y => {
+    _.each(_.range(squares[0].length), x => {
+      if (squares[y][x].owner !== "empty") {
         squares[y][x].enable = false
         return
       }
       const maps = _.map([-1, 0, 1], dx =>
-        _.map([-1, 0, 1], (dy) => {
+        _.map([-1, 0, 1], dy => {
           if (dx === 0 && dy === 0) {
             return false
           }
@@ -114,7 +119,7 @@ function enableCheck(oldSquares: Array<Array<Square>>, hand: PlayerType): Array<
               return false
             }
             const tSquare = squares[ty][tx]
-            const isEmpty = tSquare.owner === 'empty'
+            const isEmpty = tSquare.owner === "empty"
             const isMine = tSquare.owner === hand
             const isEnemy = !isMine && !isEmpty
             if (isEmpty) {
