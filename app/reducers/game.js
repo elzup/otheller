@@ -24,6 +24,6 @@ export default function counter(state: gameStateType = initialState, action: act
   }
 }
 
-function reverseHand(hand: PlayerType): PlayerType {
+export function reverseHand(hand: PlayerType): PlayerType {
   return { white: 'black', black: 'white' }[hand];
 }

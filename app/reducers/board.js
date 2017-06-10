@@ -4,11 +4,13 @@ import _ from 'lodash';
 
 import { INITIALIZE_BOARD, PUT_STORE } from '../actions/board';
 import type { PlayerType } from './game';
+import { reverseHand } from './game';
 
 type SquareType = 'black' | 'white' | 'empty';
 
 export type Square = {
-  owner: SquareType
+  owner: SquareType,
+  enable: boolean
 };
 
 export type boardStateType = {
@@ -19,7 +21,7 @@ type actionType = {
   type: string,
   x?: number,
   y?: number,
-  hand?: PlayerType,
+  hand?: PlayerType
 };
 
 const initState: boardStateType = {
@@ -33,12 +35,12 @@ export default function counter(state: boardStateType = initState, action: actio
         new Array(8),
         () => _.map(
           new Array(8),
-          () => ({ owner: 'empty' }: Square)));
-      squares[3][4] = { owner: 'black' };
-      squares[4][3] = { owner: 'black' };
-      squares[3][3] = { owner: 'white' };
-      squares[4][4] = { owner: 'white' };
-      return { ...state, squares };
+          () => ({ owner: 'empty', enable: false }: Square)));
+      squares[3][4].owner = 'black';
+      squares[4][3].owner = 'black';
+      squares[3][3].owner = 'white';
+      squares[4][4].owner = 'white';
+      return { ...state, squares: enableCheck(squares, 'black') };
     case PUT_STORE:
       const { x, y, hand } = action;
       const squares2 = [...state.squares];
@@ -86,8 +88,53 @@ export default function counter(state: boardStateType = initState, action: actio
         });
       });
       squares2[y][x].owner = hand;
-      return { ...state, squares: squares2 };
+      return { ...state, squares: enableCheck(squares2, reverseHand(hand)) };
     default:
       return state;
   }
+}
+
+function enableCheck(oldSquares: Array<Array<Square>>, hand: PlayerType): Array<Array<Square>> {
+  const squares = [...oldSquares]; _.each(_.range(squares.length), ny => {
+    _.each(_.range(squares[0].length), nx => {
+      const res = !_.every(
+        _.map([-1, 0, 1], dx =>
+          _.map([-1, 0, 1], dy => {
+            if (dx === 0 && dy === 0) {
+              return false;
+            }
+            let i = 1;
+            let existsEnemyStone = false;
+            while (true) {
+              const tx = nx + dx * i;
+              const ty = ny + dy * i;
+              if (tx < 0 || tx >= 8 || ty < 0 || ty >= 8) {
+                return false;
+              }
+              const tSquare = squares[ty][tx];
+              const isEmpty = tSquare === 'empty';
+              const isMine = tSquare.owner === !hand;
+              const isEnemy = !isMine && !isEmpty;
+              if (isEmpty) {
+                return false;
+              }
+              if (isEnemy) {
+                existsEnemyStone = true;
+              } else {
+                if (existsEnemyStone) {
+                  break;
+                }
+                return false;
+              }
+              i += 1;
+            }
+            return true;
+          })
+        ), t => !t);
+      if (res) {
+        squares[ny][nx].enable = true;
+      }
+    });
+  });
+  return squares;
 }
