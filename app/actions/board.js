@@ -10,7 +10,7 @@ export function initializeBoard() {
   };
 }
 
-export function putStone(x: number, y: number, hand: PlayerType) {
+export function putStone(y: number, x: number, hand: PlayerType) {
   return {
     type: PUT_STORE,
     x,
