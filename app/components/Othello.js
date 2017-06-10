@@ -50,11 +50,11 @@ class Othello extends Component {
               <span>{game.hand}</span>
             </p>
           </div>
-          <table>
+          <table style={{ borderStyle: 'solid' }}>
             { _.map(board.squares, (line) => (
               <tr>
                 {_.map(line, (square: Square) => (
-                  <td style={{ width: 50, height: 50 }}>
+                  <td style={{ width: 50, height: 50, border: 'solid 1px' }}>
                     <div style={stoneStyle[square.owner]}>
                     </div>
                   </td>
