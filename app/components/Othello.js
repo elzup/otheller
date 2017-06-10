@@ -71,12 +71,19 @@ class Othello extends Component {
                       valign="center"
                       style={{ width: 50, height: 50, border: 'solid 1px' }}
                       onClick={() => {
-                        console.log('put', y, x);
+                        if (!square.enable) {
+                          return;
+                        }
                         putStone(y, x, game.hand);
                         changeHand();
                       }}
                     >
-                      <div style={{ ...stoneStyle[square.owner], ...(square.enable ? enableStyle : {}) }} />
+                      <div
+                        style={{
+                          ...stoneStyle[square.owner],
+                          ...(square.enable ? enableStyle : {})
+                        }}
+                      />
                     </td>
                   );
                 })}
