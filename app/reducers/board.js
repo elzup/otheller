@@ -42,40 +42,46 @@ export default function counter(state: boardStateType = initState, action: actio
     case PUT_STORE:
       const { x, y, hand } = action;
       const squares2 = [...state.squares];
+
+      if (state.squares[y][x].owner !== 'empty') {
+        return state;
+      }
       _.each([-1, 0, 1], dx => {
         _.each([-1, 0, 1], dy => {
           if (dx === 0 && dy === 0) {
             return;
           }
           let i = 1;
-          let canReverse = false;
           let existsEnemyStone = false;
           while (true) {
             const tx = x + dx * i;
             const ty = y + dy * i;
             if (tx < 0 || tx >= 8 || ty < 0 || ty >= 8) {
-              break;
+              return;
             }
             const tSquare = state.squares[ty][tx];
-            const isEnemy = [hand, 'empty'].includes(tSquare.owner);
+            const isEmpty = tSquare === 'empty';
             const isMine = tSquare.owner === hand;
+            const isEnemy = !isMine && !isEmpty;
+            if (isEmpty) {
+              return;
+            }
             if (isEnemy) {
               existsEnemyStone = true;
             } else {
-              if (existsEnemyStone && isMine) {
-                canReverse = true;
+              if (existsEnemyStone) {
+                break;
               }
-              break;
+              return;
             }
             i += 1;
           }
-          if (canReverse) {
-            while (i > 0) {
-              const tx = x + dx * i;
-              const ty = y + dy * i;
-              squares2[ty][tx].owner = hand;
-              i -= 1;
-            }
+          while (i > 0) {
+            const tx = x + dx * i;
+            const ty = y + dy * i;
+            console.log(tx, ty);
+            squares2[ty][tx].owner = hand;
+            i -= 1;
           }
         });
       });
