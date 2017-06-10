@@ -72,12 +72,14 @@ class Othello extends Component {
             </div>
           </div>
           <table style={{ borderStyle: 'solid' }}>
+            <tbody>
             { _.map(_.range(board.squares.length), (y) => (
-              <tr>
+              <tr key={y}>
                 { _.map(_.range(board.squares[0].length), (x) => {
                   const square: Square = board.squares[y][x];
                   return (
                     <td
+                      key={x}
                       style={{ verticalAlign: 'middle', align: 'center', width: 50, height: 50, border: 'solid 1px' }}
                       onClick={() => {
                         if (!square.enable) {
@@ -98,10 +100,7 @@ class Othello extends Component {
                 })}
               </tr>
             ))}
-            <tr>
-
-              <td />
-            </tr>
+            </tbody>
           </table>
         </div>
       </div>
