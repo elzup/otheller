@@ -1,38 +1,47 @@
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
+
 import styles from './Counter.css';
+import type { boardStateType, Square } from '../reducers/board';
 
 class Othello extends Component {
   props: {
-    increment: () => void,
-    incrementIfOdd: () => void,
-    incrementAsync: () => void,
-    decrement: () => void,
-    counter: number
+    board: boardStateType,
+    initializeBoard: Function,
+    initializeGame: Function,
+    putStore: (x: number, y: number) => void
   };
 
+  componentDidMount() {
+    this.props.initializeBoard();
+    this.props.initializeGame();
+  }
+
   render() {
-    const { increment, incrementIfOdd, incrementAsync, decrement, counter } = this.props;
+    const { board } = this.props;
     return (
       <div>
         <div className={styles.backButton} data-tid="backButton">
           <Link to="/">
             <i className="fa fa-arrow-left fa-3x" />
           </Link>
-        </div>
-        <div className={`counter ${styles.counter}`} data-tid="counter">
-          {counter}
-        </div>
-        <div className={styles.btnGroup}>
-          <button className={styles.btn} onClick={increment} data-tclass="btn">
-            <i className="fa fa-plus" />
-          </button>
-          <button className={styles.btn} onClick={decrement} data-tclass="btn">
-            <i className="fa fa-minus" />
-          </button>
-          <button className={styles.btn} onClick={incrementIfOdd} data-tclass="btn">odd</button>
-          <button className={styles.btn} onClick={() => incrementAsync()} data-tclass="btn">async</button>
+          <table>
+            { _.map(board.squares, (line) => (
+              <tr>
+                {_.map(line, (square: Square) => (
+                  <td>
+                    {square.owner}
+                  </td>
+                ))}
+              </tr>
+            ))}
+            <tr>
+
+              <td />
+            </tr>
+          </table>
         </div>
       </div>
     );

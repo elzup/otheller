@@ -1,9 +1,9 @@
 // @flow
-import _ from 'lodash'
+import _ from 'lodash';
 
 import { INITIALIZE_BOARD, PUT_STORE } from '../actions/board';
 
-type SquareType = 'black' | 'white' | 'empty'
+type SquareType = 'black' | 'white' | 'empty';
 
 export type Square = {
   owner: SquareType
