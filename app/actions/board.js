@@ -9,8 +9,10 @@ export function initializeBoard() {
   };
 }
 
-export function putStone() {
+export function putStone(x: number, y: number) {
   return {
-    type: PUT_STORE
+    type: PUT_STORE,
+    x,
+    y
   };
 }

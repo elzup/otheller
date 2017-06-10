@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
@@ -20,8 +22,7 @@ const stoneStyle = {
     background: 'black',
     borderRadius: 5,
   },
-  empty: {
-  }
+  empty: {}
 };
 
 class Othello extends Component {
@@ -29,7 +30,7 @@ class Othello extends Component {
     board: boardStateType,
     game: gameStateType,
     initializeBoard: Function,
-    putStore: (x: number, y: number) => void
+    putStone: (x: number, y: number) => void
   };
 
   componentDidMount() {
@@ -51,14 +52,21 @@ class Othello extends Component {
             </p>
           </div>
           <table style={{ borderStyle: 'solid' }}>
-            { _.map(board.squares, (line) => (
+            { _.map(_.range(board.squares.length), (y) => (
               <tr>
-                {_.map(line, (square: Square) => (
-                  <td style={{ width: 50, height: 50, border: 'solid 1px' }}>
-                    <div style={stoneStyle[square.owner]}>
-                    </div>
-                  </td>
-                ))}
+                { _.map(_.range(board.squares[0].length), (x) => {
+                  const square = board.squares[y][x];
+                  return (
+                    <td
+                      style={{ width: 50, height: 50, border: 'solid 1px' }}
+                      onClick={() => {
+                        console.log('put', y, x);
+                        this.props.putStone(y, x);
+                      }} >
+                      <div style={stoneStyle[square.owner]} />
+                    </td>
+                  );
+                })}
               </tr>
             ))}
             <tr>
