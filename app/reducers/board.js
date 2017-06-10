@@ -29,10 +29,10 @@ export default function counter(state: boardStateType = initState, action: actio
         () => _.map(
           new Array(8),
           () => ({ owner: 'empty' }: Square)));
-      squares[3][4] = { owner: 'black' };
-      squares[4][3] = { owner: 'black' };
-      squares[3][3] = { owner: 'white' };
-      squares[4][4] = { owner: 'white' };
+      squares[3][4] = { owner: 'white' };
+      squares[4][3] = { owner: 'white' };
+      squares[3][3] = { owner: 'black' };
+      squares[4][4] = { owner: 'black' };
       return { ...state, squares };
     case PUT_STORE:
       return state;
