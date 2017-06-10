@@ -27,10 +27,10 @@ const stoneStyle = {
 
 const enableStyle = {
   borderRadius: 5,
-  margin: 5,
+  margin: 3,
   width: 40,
   height: 40,
-  border: 'solid yellow 2px'
+  border: 'solid #aaa 2px'
 };
 
 class Othello extends Component {
@@ -67,6 +67,8 @@ class Othello extends Component {
                   const square: Square = board.squares[y][x];
                   return (
                     <td
+                      align="center"
+                      valign="center"
                       style={{ width: 50, height: 50, border: 'solid 1px' }}
                       onClick={() => {
                         console.log('put', y, x);
