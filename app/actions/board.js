@@ -1,4 +1,5 @@
 // @flow
+import type { PlayerType } from '../reducers/game'
 
 export const INITIALIZE_BOARD = 'INITIALIZE_BOARD';
 export const PUT_STORE = 'PUT_STORE';
@@ -9,10 +10,11 @@ export function initializeBoard() {
   };
 }
 
-export function putStone(x: number, y: number) {
+export function putStone(x: number, y: number, hand: PlayerType) {
   return {
     type: PUT_STORE,
     x,
-    y
+    y,
+    hand
   };
 }

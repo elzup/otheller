@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 import styles from './Counter.css';
 import type { boardStateType, Square } from '../reducers/board';
-import type { gameStateType } from '../reducers/game';
+import type { gameStateType, PlayerType } from '../reducers/game';
 
 const stoneStyle = {
   white: {
@@ -30,7 +30,7 @@ class Othello extends Component {
     board: boardStateType,
     game: gameStateType,
     initializeBoard: Function,
-    putStone: (x: number, y: number) => void
+    putStone: (x: number, y: number, hand: PlayerType) => void
   };
 
   componentDidMount() {
@@ -55,14 +55,15 @@ class Othello extends Component {
             { _.map(_.range(board.squares.length), (y) => (
               <tr>
                 { _.map(_.range(board.squares[0].length), (x) => {
-                  const square = board.squares[y][x];
+                  const square: Square = board.squares[y][x];
                   return (
                     <td
                       style={{ width: 50, height: 50, border: 'solid 1px' }}
                       onClick={() => {
                         console.log('put', y, x);
                         this.props.putStone(y, x);
-                      }} >
+                      }}
+                    >
                       <div style={stoneStyle[square.owner]} />
                     </td>
                   );

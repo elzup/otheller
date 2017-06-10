@@ -35,6 +35,7 @@ export default function counter(state: boardStateType = initState, action: actio
       squares[4][4] = { owner: 'black' };
       return { ...state, squares };
     case PUT_STORE:
+      const {x, y, hand} = action;
       return state;
     default:
       return state;
