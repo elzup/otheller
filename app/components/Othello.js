@@ -29,6 +29,7 @@ class Othello extends Component {
   props: {
     board: boardStateType,
     game: gameStateType,
+    changeHand: Function,
     initializeBoard: Function,
     putStone: (x: number, y: number, hand: PlayerType) => void
   };
@@ -38,7 +39,7 @@ class Othello extends Component {
   }
 
   render() {
-    const { board, game } = this.props;
+    const { board, game, changeHand, putStone } = this.props;
     return (
       <div>
         <div className={styles.backButton} data-tid="backButton">
@@ -61,7 +62,8 @@ class Othello extends Component {
                       style={{ width: 50, height: 50, border: 'solid 1px' }}
                       onClick={() => {
                         console.log('put', y, x);
-                        this.props.putStone(y, x);
+                        putStone(y, x, game.hand);
+                        changeHand();
                       }}
                     >
                       <div style={stoneStyle[square.owner]} />
