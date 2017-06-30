@@ -25,6 +25,14 @@ const stoneStyle = {
   empty: {}
 };
 
+const enableStyle = {
+  borderRadius: 5,
+  margin: 3,
+  width: 40,
+  height: 40,
+  border: 'solid #aaa 2px'
+};
+
 class Othello extends Component {
   props: {
     board: boardStateType,
@@ -59,14 +67,23 @@ class Othello extends Component {
                   const square: Square = board.squares[y][x];
                   return (
                     <td
+                      align="center"
+                      valign="center"
                       style={{ width: 50, height: 50, border: 'solid 1px' }}
                       onClick={() => {
-                        console.log('put', y, x);
+                        if (!square.enable) {
+                          return;
+                        }
                         putStone(y, x, game.hand);
                         changeHand();
                       }}
                     >
-                      <div style={stoneStyle[square.owner]} />
+                      <div
+                        style={{
+                          ...stoneStyle[square.owner],
+                          ...(square.enable ? enableStyle : {})
+                        }}
+                      />
                     </td>
                   );
                 })}
