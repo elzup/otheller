@@ -1,141 +1,145 @@
-/* eslint-disable no-mixed-operators */
 // @flow
-import _ from 'lodash';
+import _ from "lodash"
 
-import { INITIALIZE_BOARD, PUT_STORE } from '../actions/board';
-import type { PlayerType } from './game';
-import { reverseHand } from './game';
+import { INITIALIZE_BOARD, PUT_STORE } from "../actions/board"
+import type { PlayerType } from "./game"
+import { reverseHand } from "./game"
 
-type SquareType = 'black' | 'white' | 'empty';
+type SquareType = "black" | "white" | "empty"
 
 export type Square = {
   owner: SquareType,
   enable: boolean
-};
+}
 
 export type boardStateType = {
   squares: Array<Array<Square>>
-};
+}
 
 type actionType = {
   type: string,
   x?: number,
   y?: number,
   hand?: PlayerType
-};
+}
 
 const initState: boardStateType = {
-  squares: [[]]
-};
+  squares: [[]],
+}
 
-export default function counter(state: boardStateType = initState, action: actionType) {
+export default function counter(
+  state: boardStateType = initState,
+  action: actionType
+) {
   switch (action.type) {
     case INITIALIZE_BOARD:
-      const squares = _.map(
-        new Array(8),
-        () => _.map(
-          new Array(8),
-          () => ({ owner: 'empty', enable: false }: Square)));
-      squares[3][4].owner = 'black';
-      squares[4][3].owner = 'black';
-      squares[3][3].owner = 'white';
-      squares[4][4].owner = 'white';
-      return { ...state, squares: enableCheck(squares, 'black') };
+      const squares = _.map(new Array(8), () =>
+        _.map(new Array(8), () => ({ owner: "empty", enable: false }: Square))
+      )
+      squares[3][4].owner = "black"
+      squares[4][3].owner = "black"
+      squares[3][3].owner = "white"
+      squares[4][4].owner = "white"
+      return { ...state, squares: enableCheck(squares, "black") }
     case PUT_STORE:
-      const { x, y, hand } = action;
-      const squares2 = [...state.squares];
+      const { x, y, hand } = action
+      const squares2 = [...state.squares]
 
-      if (state.squares[y][x].owner !== 'empty') {
-        return state;
+      if (state.squares[y][x].owner !== "empty") {
+        return state
       }
       _.each([-1, 0, 1], dx => {
         _.each([-1, 0, 1], dy => {
           if (dx === 0 && dy === 0) {
-            return;
+            return
           }
-          let i = 1;
-          let existsEnemyStone = false;
+          let i = 1
+          let existsEnemyStone = false
           while (true) {
-            const tx = x + dx * i;
-            const ty = y + dy * i;
+            const tx = x + dx * i
+            const ty = y + dy * i
             if (tx < 0 || tx >= 8 || ty < 0 || ty >= 8) {
-              return;
+              return
             }
-            const tSquare = state.squares[ty][tx];
-            const isEmpty = tSquare.owner === 'empty';
-            const isMine = tSquare.owner === hand;
-            const isEnemy = !isMine && !isEmpty;
+            const tSquare = state.squares[ty][tx]
+            const isEmpty = tSquare.owner === "empty"
+            const isMine = tSquare.owner === hand
+            const isEnemy = !isMine && !isEmpty
             if (isEmpty) {
-              return;
+              return
             }
             if (isEnemy) {
-              existsEnemyStone = true;
+              existsEnemyStone = true
             } else {
               if (existsEnemyStone) {
-                break;
+                break
               }
-              return;
+              return
             }
-            i += 1;
+            i += 1
           }
           while (i > 0) {
-            const tx = x + dx * i;
-            const ty = y + dy * i;
-            console.log(tx, ty);
-            squares2[ty][tx].owner = hand;
-            i -= 1;
+            const tx = x + dx * i
+            const ty = y + dy * i
+            console.log(tx, ty)
+            squares2[ty][tx].owner = hand
+            i -= 1
           }
-        });
-      });
-      squares2[y][x].owner = hand;
-      return { ...state, squares: enableCheck(squares2, reverseHand(hand)) };
+        })
+      })
+      squares2[y][x].owner = hand
+      return { ...state, squares: enableCheck(squares2, reverseHand(hand)) }
     default:
-      return state;
+      return state
   }
 }
 
-function enableCheck(oldSquares: Array<Array<Square>>, hand: PlayerType): Array<Array<Square>> {
-  const squares = [...oldSquares];
+function enableCheck(
+  oldSquares: Array<Array<Square>>,
+  hand: PlayerType
+): Array<Array<Square>> {
+  const squares = [...oldSquares]
   _.each(_.range(squares.length), y => {
     _.each(_.range(squares[0].length), x => {
-      if (squares[y][x].owner !== 'empty') {
-        squares[y][x].enable = false;
-        return;
+      if (squares[y][x].owner !== "empty") {
+        squares[y][x].enable = false
+        return
       }
       const maps = _.map([-1, 0, 1], dx =>
         _.map([-1, 0, 1], dy => {
           if (dx === 0 && dy === 0) {
-            return false;
+            return false
           }
-          let i = 1;
-          let existsEnemyStone = false;
+          let i = 1
+          let existsEnemyStone = false
           while (true) {
-            const tx = x + dx * i;
-            const ty = y + dy * i;
+            const tx = x + dx * i
+            const ty = y + dy * i
             if (tx < 0 || tx >= 8 || ty < 0 || ty >= 8) {
-              return false;
+              return false
             }
-            const tSquare = squares[ty][tx];
-            const isEmpty = tSquare.owner === 'empty';
-            const isMine = tSquare.owner === hand;
-            const isEnemy = !isMine && !isEmpty;
+            const tSquare = squares[ty][tx]
+            const isEmpty = tSquare.owner === "empty"
+            const isMine = tSquare.owner === hand
+            const isEnemy = !isMine && !isEmpty
             if (isEmpty) {
-              return false;
+              return false
             }
             if (isEnemy) {
-              existsEnemyStone = true;
+              existsEnemyStone = true
             } else {
               if (existsEnemyStone) {
-                break;
+                break
               }
-              return false;
+              return false
             }
-            i += 1;
+            i += 1
           }
-          return true;
-        }));
-      squares[y][x].enable = _.some(_.flatten(maps), Boolean);
-    });
-  });
-  return squares;
+          return true
+        })
+      )
+      squares[y][x].enable = _.some(_.flatten(maps), Boolean)
+    })
+  })
+  return squares
 }
