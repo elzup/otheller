@@ -10,8 +10,8 @@ export default () => (
   <App>
     <Switch>
       <Route path="/counter" component={CounterPage} />
+      <Route path="/othello" component={OthelloPage} />
       <Route path="/" component={HomePage} />
-      <Route path="/otheller" component={OthelloPage} />
     </Switch>
   </App>
 );

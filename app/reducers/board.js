@@ -1,9 +1,9 @@
 // @flow
-import _ from 'lodash'
+import _ from 'lodash';
 
 import { INITIALIZE_BOARD, PUT_STORE } from '../actions/board';
 
-type SquareType = 'black' | 'white' | 'empty'
+type SquareType = 'black' | 'white' | 'empty';
 
 export type Square = {
   owner: SquareType
@@ -35,6 +35,7 @@ export default function counter(state: boardStateType = initState, action: actio
       squares[4][4] = { owner: 'white' };
       return { ...state, squares };
     case PUT_STORE:
+      const {x, y, hand} = action;
       return state;
     default:
       return state;

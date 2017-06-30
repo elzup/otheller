@@ -1,21 +1,29 @@
 // @flow
-import { INCREMENT_COUNTER, DECREMENT_COUNTER } from '../actions/counter';
+import { CHANGE_HAND } from '../actions/game';
 
-export type counterStateType = {
-  counter: number
+export type PlayerType = 'white' | 'black';
+
+export type gameStateType = {
+  hand: PlayerType
+};
+
+const initialState: gameStateType = {
+  hand: 'black'
 };
 
 type actionType = {
   type: string
 };
 
-export default function counter(state: number = 0, action: actionType) {
+export default function counter(state: gameStateType = initialState, action: actionType) {
   switch (action.type) {
-    case INCREMENT_COUNTER:
-      return state + 1;
-    case DECREMENT_COUNTER:
-      return state - 1;
+    case CHANGE_HAND:
+      return { ...state, hand: reverseHand(state.hand) };
     default:
       return state;
   }
+}
+
+function reverseHand(hand: PlayerType): PlayerType {
+  return { white: 'black', black: 'white' }[hand];
 }
